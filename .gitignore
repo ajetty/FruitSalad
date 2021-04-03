@@ -75,3 +75,9 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Assets, Art, Ect - No you're not getting free shit, lmao.
+Content/SimpleTown/
+Content/Meshes/
+Content/Textures/
+Content/UI/ExampleBackground.uasset

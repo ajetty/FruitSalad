@@ -73,8 +73,7 @@ void APawnBulldozer::LookUp(float Value)
 {
 	if(Value != 0.0f)
 	{
-		AddControllerPitchInput(Value);
-		UE_LOG(LogTemp, Error, TEXT("LOOK UP HAS CHANGED %d"), Value)
+		AddControllerPitchInput(-Value);
 	}
 }
 
@@ -83,7 +82,6 @@ void APawnBulldozer::LookRight(float Value)
 	if(Value != 0.0f)
 	{
 		AddControllerYawInput(Value);
-		UE_LOG(LogTemp, Warning, TEXT("LOOK RIGHT HAS CHANGED %d"), Value)
 	}
 }
 
