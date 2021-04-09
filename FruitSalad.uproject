@@ -10,7 +10,9 @@
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"PhysXVehicles",
-				"Engine"
+				"Engine",
+				"UMGEditor",
+				"UMG"
 			]
 		}
 	],

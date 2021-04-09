@@ -81,3 +81,6 @@ Content/SimpleTown/
 Content/Meshes/
 Content/Textures/
 Content/UI/ExampleBackground.uasset
+Content/Meshes/Bulldozer/SM_Bulldozer.uasset
+Content/UI/MenuIcons/*
+Content/UI/Font/*
