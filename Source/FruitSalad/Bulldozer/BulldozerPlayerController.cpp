@@ -16,14 +16,16 @@ ABulldozerPlayerController::ABulldozerPlayerController()
 
 void ABulldozerPlayerController::BeginPlay()
 {
-	Super::BeginPlay();
-
 	HUD = CreateWidget(this, HUDClass);
 	
-	if(HUD != nullptr)
+	if(HUD == nullptr)
 	{
-		HUD->AddToViewport();
+		UE_LOG(LogTemp, Error, TEXT("ERROR: BulldozerPlayerController.cpp: HUD IS NULLPTR"))
+		return;
 	}
+	
+	HUD->AddToViewport();
+	//HUD->SetVisibility(ESlateVisibility::Hidden);
 	
 	UTextBlock* TEST = Cast<UTextBlock>(HUD->WidgetTree->FindWidget("TextBlock_TEST"));
 	
@@ -44,6 +46,8 @@ void ABulldozerPlayerController::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("ERROR: BulldozerPlayerController: BULLDOZER PLAYER CONTROLLER NOT BEING READ IN BEGIN GAME"))
 		return;
 	}
+
+	Super::BeginPlay();
 }
 
 void ABulldozerPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner)
