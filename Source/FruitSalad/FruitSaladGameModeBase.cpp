@@ -30,10 +30,10 @@ void AFruitSaladGameModeBase::Tick(float DeltaSeconds)
 
 		//convert time remaining to a minute-second format for HUD text boxes 
 		int32 Minutes = static_cast<int32>(CurrentTimeSeconds/60.0f);
-		UE_LOG(LogTemp, Warning, TEXT("Minutes: %d"), Minutes);
+		//UE_LOG(LogTemp, Warning, TEXT("Minutes: %d"), Minutes);
 		
 		int32 Seconds = static_cast<int32>(CurrentTimeSeconds) % 60;
-		UE_LOG(LogTemp, Warning, TEXT("Seconds: %d"), Seconds);
+		//UE_LOG(LogTemp, Warning, TEXT("Seconds: %d"), Seconds);
 		
 		PlayerControllerRef->UpdateHUD(Minutes, Seconds);
 	}
