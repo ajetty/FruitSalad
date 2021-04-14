@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 
-
 #include "Bulldozer/BulldozerPlayerController.h"
 #include "Bulldozer/PawnBulldozer.h"
 #include "GameFramework/GameModeBase.h"
@@ -19,7 +18,8 @@ class FRUITSALAD_API AFruitSaladGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 	
 public:
-		AFruitSaladGameModeBase();
+	AFruitSaladGameModeBase();
+	void ActorDied(AActor* DeadActor, float TimeGain);
 
 protected:
 	virtual void BeginPlay() override;
@@ -33,14 +33,17 @@ private:
 	float CountDownTimerSeconds;
 
 	void HandleGameStart();
-	void HandleGameOver();
-	void EndGame();
+	void HandleGameOver(bool bIsWinner);
+	void EndGame(bool bIsPlayerWinner);
 
 	int32 TargetBuildings = 0;
+	int32 GetTargetBuildings();
+	
 	float EndTimeSeconds;
 	float CurrentTimeSeconds;
-	FTimerHandle CountDownTimer;
-	//int32 GetTargetBuildings();
+	FTimerHandle CountDownTimerHandle;
+	FTimerDelegate HandleGameOverDelegate;
+	void AddCountDownTime(float AddSeconds);
 	
 	ABulldozerPlayerController* PlayerControllerRef;
 	APawnBulldozer* PlayerBulldozer;

@@ -19,30 +19,39 @@ class FRUITSALAD_API ABulldozerPlayerController : public APlayerController
 
 public:
 	ABulldozerPlayerController();
-	virtual void GameHasEnded(AActor* EndGameFocus = nullptr, bool bIsWinner = false) override;
+	
+	virtual void GameHasEnded(AActor* EndGameFocus = nullptr, bool bIsWinner = true) override;
+	
 	void UpdateHUD(int32 MinutesUpdate, int32 SecondsUpdate);
 
 protected:
 	virtual void BeginPlay() override;
 
 private:
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<UUserWidget> HUDClass;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UUserWidget* HUD;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UUserWidget* PauseMenu;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UUserWidget* MainMenu;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UUserWidget* WinScreen;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UUserWidget* LoseScreen;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UUserWidget> HUDClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UUserWidget> LoseScreenClass;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<UUserWidget> WinScreenClass;
 
 	UTextBlock* TextBlock_Minutes;
 	UTextBlock* TextBlock_Seconds;
-
-	// UFruitSaladHUD* PlayerHUD;
-	//
-	// UPROPERTY(EditAnywhere)
-	// TSubclassOf<UUserWidget> PlayerHUDClass;
 };

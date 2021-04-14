@@ -3,8 +3,10 @@
 
 #include "BuildingBase.h"
 
-#include "WheeledVehicle.h"
+
+#include "FruitSalad/FruitSaladGameModeBase.h"
 #include "FruitSalad/Bulldozer/PawnBulldozer.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABuildingBase::ABuildingBase()
@@ -28,6 +30,8 @@ ABuildingBase::ABuildingBase()
 
 	DefaultDamage = 1.0f;
 	DefaultImpulse = 1.0f;
+
+	TimeGain = 60.0f; //seconds
 }
 
 // Called when the game starts or when spawned
@@ -41,6 +45,8 @@ void ABuildingBase::BeginPlay()
 	DestructibleComponent->OnComponentHit.AddDynamic(this, &ABuildingBase::Damage);
 	
 	TriggerComponent->OnComponentBeginOverlap.AddDynamic(this, &ABuildingBase::Trigger);
+
+	GameModeBaseRef = Cast<AFruitSaladGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 	
 	CurrentHealth = MaxHealth;
 }
@@ -55,7 +61,7 @@ void ABuildingBase::Damage(UPrimitiveComponent* HitComponent, AActor* OtherActor
 	FVector NormalImpulse, const FHitResult& Hit)
 {
 
-	if((Cast<APawnBulldozer>(OtherActor)))
+	if(APawnBulldozer* PlayerPawn = Cast<APawnBulldozer>(OtherActor))
 	{
 		if(!IsDestroyed)
 		{
@@ -92,8 +98,10 @@ void ABuildingBase::Destroy(float Damage, FVector HitLocation, FVector ImpulseDi
 	if(!IsDestroyed)
 	{
 		IsDestroyed = true;
-		
+
 		DestructibleComponent->ApplyDamage(Damage, HitLocation, ImpulseDir, Impulse);
+
+		GameModeBaseRef->ActorDied(this, TimeGain);
 	}
 }
 

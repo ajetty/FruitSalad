@@ -7,7 +7,6 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
 #include "DestructibleComponent.h"
-#include "WheeledVehicle.h"
 
 #include "BuildingBase.generated.h"
 
@@ -17,6 +16,7 @@ class UDestructibleComponent;
 class UMaterialInstanceDynamic;
 class UMaterial;
 class AWheeledVehicle;
+class AFruitSaladGameModeBase;
 UCLASS()
 class FRUITSALAD_API ABuildingBase : public AActor
 {
@@ -25,7 +25,6 @@ class FRUITSALAD_API ABuildingBase : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ABuildingBase();
-
 	
 protected:
 	// Called when the game starts or when spawned
@@ -33,11 +32,7 @@ protected:
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-private:
-		//AWheeledVehicle* WheeledVehicle;
-
-private:
+	
 	UFUNCTION()
     void Damage(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 
@@ -45,7 +40,7 @@ private:
     void Trigger(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& Sweep);
 
 	UFUNCTION()
-    void Destroy(float Damage, FVector HitLocation, FVector ImpulseDir, float Impulse);
+    virtual void Destroy(float Damage, FVector HitLocation, FVector ImpulseDir, float Impulse);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Destructable", meta = (AllowPrivateAccess = "true"))
 	UBoxComponent* TriggerComponent;
@@ -77,7 +72,10 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Destructable", meta = (AllowPrivateAccess = "true"))
 	float DefaultImpulse;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Destructable", meta = (AllowPrivateAccess = "true"))
+	float TimeGain;
 
 	
-
+private:
+	AFruitSaladGameModeBase* GameModeBaseRef;
 };

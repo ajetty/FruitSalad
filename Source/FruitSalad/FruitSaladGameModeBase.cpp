@@ -5,6 +5,7 @@
 
 
 
+#include "Building/BuildingTarget.h"
 #include "GameFramework/HUD.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -23,9 +24,9 @@ void AFruitSaladGameModeBase::BeginPlay()
 
 void AFruitSaladGameModeBase::Tick(float DeltaSeconds)
 {
-	if(GetWorld()->GetTimerManager().TimerExists(CountDownTimer))
+	if(GetWorld()->GetTimerManager().TimerExists(CountDownTimerHandle))
 	{
-		CurrentTimeSeconds = GetWorld()->GetTimerManager().GetTimerRemaining(CountDownTimer);
+		CurrentTimeSeconds = GetWorld()->GetTimerManager().GetTimerRemaining(CountDownTimerHandle);
 		//UE_LOG(LogTemp, Warning, TEXT("WARNING: FruitSaladGameModeBase: TIME, %f"), CurrentTimeSeconds);
 
 		//convert time remaining to a minute-second format for HUD text boxes 
@@ -39,6 +40,12 @@ void AFruitSaladGameModeBase::Tick(float DeltaSeconds)
 	}
 }
 
+void AFruitSaladGameModeBase::AddCountDownTime(float AddSeconds)
+{
+	EndTimeSeconds = CurrentTimeSeconds + AddSeconds;
+	GetWorld()->GetTimerManager().SetTimer(CountDownTimerHandle, HandleGameOverDelegate, EndTimeSeconds, false);
+}
+
 void AFruitSaladGameModeBase::HandleGameStart()
 {
 	PlayerBulldozer = Cast<APawnBulldozer>(UGameplayStatics::GetPlayerPawn(this, 0));
@@ -48,20 +55,51 @@ void AFruitSaladGameModeBase::HandleGameStart()
 
 	if(PlayerControllerRef)
 	{
-		GetWorld()->GetTimerManager().SetTimer(CountDownTimer, this, &AFruitSaladGameModeBase::EndGame, EndTimeSeconds, false);
-	}	
+		//if timer counts down to zero without variable TargetBuilding == 0 then player loses
+		HandleGameOverDelegate = FTimerDelegate::CreateUObject(this, &AFruitSaladGameModeBase::HandleGameOver, false);
+		GetWorld()->GetTimerManager().SetTimer(CountDownTimerHandle, HandleGameOverDelegate, EndTimeSeconds, false);
+	}
+
+	TargetBuildings = GetTargetBuildings();
+
+	UE_LOG(LogTemp, Warning, TEXT("Buildings: %d"), TargetBuildings);
 }
 
-void AFruitSaladGameModeBase::HandleGameOver()
+void AFruitSaladGameModeBase::HandleGameOver(bool bIsWinner)
 {
+	EndGame(bIsWinner);
+	GetWorld()->GetTimerManager().ClearTimer(CountDownTimerHandle);
 }
 
-void AFruitSaladGameModeBase::EndGame()
+void AFruitSaladGameModeBase::EndGame(bool bIsPlayerWinner)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Game Mode: GAME OVER"));
-	PlayerControllerRef->GameHasEnded();
+	bool bIsWinner = PlayerControllerRef->IsPlayerController() == bIsPlayerWinner;
+	PlayerControllerRef->GameHasEnded(PlayerControllerRef->GetPawn(), bIsWinner);
 }
 
-// int32 AFruitSaladGameModeBase::GetTargetBuildings()
-// {
-// }
+int32 AFruitSaladGameModeBase::GetTargetBuildings()
+{
+	TArray<AActor*> BuildingTargetPawns;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ABuildingTarget::StaticClass(), BuildingTargetPawns);
+	return BuildingTargetPawns.Num();
+}
+
+void AFruitSaladGameModeBase::ActorDied(AActor* DeadActor, float TimeGain)
+{
+	if(ABuildingTarget* DeadTargetBuilding = Cast<ABuildingTarget>(DeadActor))
+	{
+		--TargetBuildings;
+		
+		if(TargetBuildings == 0)
+		{
+			HandleGameOver(true);
+		}
+
+		AddCountDownTime(TimeGain);
+	}
+	else if(ABuildingBase* DeadBaseBuilding = Cast<ABuildingBase>(DeadActor))
+	{
+		AddCountDownTime(TimeGain);
+	}	
+}

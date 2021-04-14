@@ -25,25 +25,14 @@ void ABulldozerPlayerController::BeginPlay()
 	}
 	
 	HUD->AddToViewport();
-	//HUD->SetVisibility(ESlateVisibility::Hidden);
-	
-	UTextBlock* TEST = Cast<UTextBlock>(HUD->WidgetTree->FindWidget("TextBlock_TEST"));
-	
-	if(TEST)
-	{
-		//UE_LOG(LogTemp, Error, TEXT("TEST IS GOOOOOD"));
-		TEST->SetText(FText::FromString("Banananas!"));
-	}
-	
+
 	//widgets from HUD parent class FruitSaladHUD
 	TextBlock_Minutes = Cast<UTextBlock>(HUD->WidgetTree->FindWidget("TextBlock_Minutes"));
 	TextBlock_Seconds = Cast<UTextBlock>(HUD->WidgetTree->FindWidget("TextBlock_Seconds"));
 
-	//UpdateHUD(27.0f, 27.0f);
-
 	if(!TextBlock_Minutes && !TextBlock_Seconds)
 	{
-		UE_LOG(LogTemp, Error, TEXT("ERROR: BulldozerPlayerController: BULLDOZER PLAYER CONTROLLER NOT BEING READ IN BEGIN GAME"))
+		UE_LOG(LogTemp, Error, TEXT("ERROR: BulldozerPlayerController: BULLDOZER PLAYER CONTROLLER TEXT MINUTES AND TEXT SECONDS NOT BEING READ IN BEGIN GAME"))
 		return;
 	}
 
@@ -54,6 +43,27 @@ void ABulldozerPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinn
 {
 	Super::GameHasEnded(EndGameFocus, bIsWinner);
 	UE_LOG(LogTemp, Warning, TEXT("Player Controller: The Game has Ended!"));
+
+	HUD->RemoveFromViewport();
+
+	if(bIsWinner)
+	{
+		WinScreen = CreateWidget(this, WinScreenClass);
+
+		if(WinScreen != nullptr)
+		{
+			WinScreen->AddToViewport();
+		}
+	}
+	else
+	{
+		LoseScreen = CreateWidget(this, LoseScreenClass);
+
+		if(LoseScreen != nullptr)
+		{
+			LoseScreen->AddToViewport();
+		}
+	}
 }
 
 void ABulldozerPlayerController::UpdateHUD(int32 MinutesUpdate, int32 SecondsUpdate)
