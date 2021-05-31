@@ -19,5 +19,6 @@ void ABuildingTarget::Destroy(float Damage, FVector HitLocation, FVector Impulse
 	Super::Destroy(Damage, HitLocation, ImpulseDir, Impulse);
 
 	//get rid of outline material
+	DestructibleComponent->SetRenderCustomDepth(false);
 	DestructibleComponent->SetCustomDepthStencilValue(0);
 }

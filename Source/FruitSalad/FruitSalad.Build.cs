@@ -9,7 +9,7 @@ public class FruitSalad : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "PhysXVehicles", "ApexDestruction", "GameplayTasks"
-			, "UMG", "Slate", "SlateCore" });
+			, "UMG", "Slate", "SlateCore", "NavigationSystem" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

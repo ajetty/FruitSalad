@@ -25,6 +25,9 @@ class FRUITSALAD_API ABuildingBase : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ABuildingBase();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Destructable", meta = (AllowPrivateAccess = "true"))
+	float TimeGain;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -72,8 +75,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Destructable", meta = (AllowPrivateAccess = "true"))
 	float DefaultImpulse;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Destructable", meta = (AllowPrivateAccess = "true"))
-	float TimeGain;
+
 
 	
 private:

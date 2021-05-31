@@ -6,6 +6,8 @@
 
 
 #include "Building/BuildingTarget.h"
+#include "Fruit/CharacterFruitBase.h"
+#include "Fruit/FruitBase.h"
 #include "GameFramework/HUD.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -85,7 +87,7 @@ int32 AFruitSaladGameModeBase::GetTargetBuildings()
 	return BuildingTargetPawns.Num();
 }
 
-void AFruitSaladGameModeBase::ActorDied(AActor* DeadActor, float TimeGain)
+void AFruitSaladGameModeBase::ActorDied(AActor* DeadActor)
 {
 	if(ABuildingTarget* DeadTargetBuilding = Cast<ABuildingTarget>(DeadActor))
 	{
@@ -95,11 +97,16 @@ void AFruitSaladGameModeBase::ActorDied(AActor* DeadActor, float TimeGain)
 		{
 			HandleGameOver(true);
 		}
-
-		AddCountDownTime(TimeGain);
+		
+		AddCountDownTime(DeadTargetBuilding->TimeGain);
 	}
 	else if(ABuildingBase* DeadBaseBuilding = Cast<ABuildingBase>(DeadActor))
 	{
-		AddCountDownTime(TimeGain);
+		AddCountDownTime(DeadBaseBuilding->TimeGain);
+	}
+	else if(ACharacterFruitBase* DeadFruit = Cast<ACharacterFruitBase>(DeadActor))
+	{
+		AddCountDownTime(DeadFruit->FruitDataAsset->TimeGain);
+		DeadFruit->Destroy();
 	}	
 }

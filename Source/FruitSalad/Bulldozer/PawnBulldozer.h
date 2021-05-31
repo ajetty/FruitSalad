@@ -8,7 +8,6 @@
 #include "AITypes.h"
 #include "WheeledVehicle.h"
 #include "Camera/CameraComponent.h"
-#include "Components/TextBlock.h"
 #include "GameFramework/SpringArmComponent.h"
 
 #include "PawnBulldozer.generated.h"
@@ -18,6 +17,7 @@ class UCameraComponent;
 class UInputComponent;
 class USkeletalMesh;
 class UTextBlock;
+class AFruitBase;
 UCLASS()
 class FRUITSALAD_API APawnBulldozer : public AWheeledVehicle
 {
@@ -57,3 +57,5 @@ private:
 
 	void UpdateInAirControl(float DeltaTime);
 };
+
+

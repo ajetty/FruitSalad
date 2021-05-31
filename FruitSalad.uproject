@@ -12,7 +12,8 @@
 				"PhysXVehicles",
 				"Engine",
 				"UMGEditor",
-				"UMG"
+				"UMG",
+				"AIModule"
 			]
 		}
 	],

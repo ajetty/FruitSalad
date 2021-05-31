@@ -19,7 +19,7 @@ class FRUITSALAD_API AFruitSaladGameModeBase : public AGameModeBase
 	
 public:
 	AFruitSaladGameModeBase();
-	void ActorDied(AActor* DeadActor, float TimeGain);
+	void ActorDied(AActor* DeadActor);
 
 protected:
 	virtual void BeginPlay() override;

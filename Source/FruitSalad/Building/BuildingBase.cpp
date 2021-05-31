@@ -101,7 +101,7 @@ void ABuildingBase::Destroy(float Damage, FVector HitLocation, FVector ImpulseDi
 
 		DestructibleComponent->ApplyDamage(Damage, HitLocation, ImpulseDir, Impulse);
 
-		GameModeBaseRef->ActorDied(this, TimeGain);
+		GameModeBaseRef->ActorDied(this);
 	}
 }
 
