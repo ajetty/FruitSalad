@@ -65,10 +65,10 @@ void ABuildingBase::Damage(UPrimitiveComponent* HitComponent, AActor* OtherActor
 	{
 		if(!IsDestroyed)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Orange, "Hit By: " + OtherComponent->GetName());
+			//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Orange, "Hit By: " + OtherComponent->GetName());
 
 			CurrentHealth = CurrentHealth - 1.0f;
-			GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Orange, "Current Health: " + FString::SanitizeFloat(CurrentHealth));
+			//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Orange, "Current Health: " + FString::SanitizeFloat(CurrentHealth));
 
 			DynamicMaterialInstance->SetScalarParameterValue("Cracks", (1 - CurrentHealth/MaxHealth));
 			//UE_LOG(LogTemp, Warning, TEXT("Current Health: %f MESH: %f"), CurrentHealth, (1 - CurrentHealth/MaxHealth));

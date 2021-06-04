@@ -4,6 +4,7 @@
 #include "FruitAIController.h"
 #include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "FruitSalad/Building/BuildingBase.h"
 #include "FruitSalad/Bulldozer/PawnBulldozer.h"
 #include "Kismet/GameplayStatics.h"
 #include "Perception/AIPerceptionComponent.h"
@@ -70,12 +71,17 @@ void AFruitAIController::OnPawnDetected(const TArray<AActor*>& DetectedPawns)
 	{
 		if(Cast<APawnBulldozer>(DetectedPawn))
 		{
+			//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, "Perceived " + DetectedPawn->GetName());
+			GetBlackboardComponent()->SetValueAsBool(TEXT("HasLineOfSight"), true);
+		}
+		else if(Cast<ABuildingBase>(DetectedPawn))
+		{
 			GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Blue, "Perceived " + DetectedPawn->GetName());
 			GetBlackboardComponent()->SetValueAsBool(TEXT("HasLineOfSight"), true);
 		}
 		else
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Red, "Perceived " + DetectedPawn->GetName());
+			//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Red, "Perceived " + DetectedPawn->GetName());
 			GetBlackboardComponent()->SetValueAsBool(TEXT("HasLineOfSight"), false);
 		}
 	}
